@@ -1,0 +1,180 @@
+---
+description: Apply these rules when creating the project
+globs:
+alwaysApply: true
+---
+## Project Overview
+
+*   **Type:** Web Application / Data Processing Pipeline
+*   **Description:** Personal document indexing and AI-powered retrieval system to index and search files (Word, PowerPoint, Excel, PDFs) across multiple storage locations, with semantic search, Q&A, automated summaries, and report assistance.
+*   **Primary Goal:** Create a robust, secure, and automated pipeline for file synchronization, embedding generation, vector storage, and user interfaces (web dashboard, Telegram bot) enabling semantic search, Q&A, and summarization.
+
+## Project Structure
+
+### Framework-Specific Routing
+
+*   **Directory Rules:**
+
+    *   **Next.js 14 (App Router):** Use `frontend/app/[route]/page.tsx` and `frontend/app/[route]/layout.tsx` for nested routes
+    *   **FastAPI (Python 3.11):** Use `backend/app/api/[endpoint].py` with APIRouter definitions
+    *   **React Router 6 (Telegram Bot UI if needed):** Store routes in `bot/src/routes` with `createBrowserRouter`
+
+### Core Directories
+
+*   **Versioned Structure:**
+
+    *   **frontend/app:** Next.js 14 App Router pages and layouts
+    *   **frontend/components:** Reusable React components and UI primitives
+    *   **backend/app:** FastAPI application entrypoints, routers, services, models, utils
+    *   **bot:** Telegram bot implementation (Node.js or Python)
+    *   **infra:** Docker Compose configurations, environment files, network definitions
+    *   **scripts:** Synchronization scripts (rclone/Syncthing), cron job definitions, maintenance tasks
+    *   **data:** Volumes and mounts (Qdrant data, backups)
+
+### Key Files
+
+*   **Stack-Versioned Patterns:**
+
+    *   **frontend/app/layout.tsx:** Next.js 14 root layout using server components
+    *   **frontend/app/page.tsx:** Next.js 14 home page
+    *   **frontend/app/search/page.tsx:** Server component for search UI fetching from `/api/search`
+    *   **backend/app/main.py:** FastAPI `app = FastAPI()` entrypoint with event handlers
+    *   **backend/app/api/search.py:** `/search` endpoint with semantic search logic
+    *   **docker-compose.yml:** Multi-service definition (qdrant, backend, frontend, bot)
+    *   **scripts/sync.sh:** rclone/Syncthing sync wrapper with logging
+    *   **scripts/backup.sh:** Encrypted nightly backup to Synology NAS
+
+## Tech Stack Rules
+
+*   **Version Enforcement:**
+
+    *   **next@14:** Enforce App Router, no `getInitialProps`, use server components by default
+    *   **python@3.11:** Use FastAPI, rely on `async`/`await`, Pydantic v2 for validation
+    *   **node@18:** Use ES Modules for Telegram bot if Node.js is chosen
+    *   **qdrant@latest:** Dockerized Qdrant with volume mounts for persistence
+    *   **docker-compose@3.9:** Use version 3.9 syntax, external networks, `.env` for secrets
+
+## PRD Compliance
+
+*   **Non-Negotiable:**
+
+    *   "Data encryption at rest (AES-256)": All stored files and vector store must be encrypted using AES-256
+    *   "Nightly encrypted backups of both raw files and the vector store to the Synology NAS." Ensure backups are scheduled, verifiable, and encrypted
+    *   "Initial full index, followed by scheduled nightly updates for new/modified files. On-demand re-indexing capability." Implement incremental indexing logic and API to trigger on-demand reindex
+    *   "Automated sync between NAS, server, Yandex Disk, and Google Drive." File sync process must be fully automated and monitored
+
+## App Flow Integration
+
+*   **Stack-Aligned Flow:**
+
+    *   Next.js 14 Search Flow → `frontend/app/search/page.tsx` (Server Component) calls FastAPI `/api/search`
+    *   Next.js 14 Dashboard Flow → `frontend/app/dashboard/page.tsx` (Client Component) fetches analytics from `/api/analytics`
+    *   FastAPI Indexing Flow → `backend/app/services/indexer.py` watches file events, extracts text, calls OpenAI embeddings, upserts to Qdrant
+    *   Telegram Bot Q&A Flow → `bot/src/bot.py` invokes FastAPI `/api/qa` and returns replies via Telegram API
+    *   Backup Flow → `scripts/backup.sh` triggered via systemd timer, writes to Synology NAS
+
+## Best Practices
+
+*   Python (3.11)
+
+    *   Use virtual environments (`venv` or `poetry`)
+    *   Adhere to PEP-8 and type hints with `mypy`
+    *   Leverage dependency injection and Pydantic for validation
+    *   Write unit and integration tests with `pytest`
+    *   Centralize logging configuration (structlog or logging.config)
+
+*   FastAPI
+
+    *   Modularize routes using `APIRouter`
+    *   Use `async` endpoints and dependency injection
+    *   Generate and maintain OpenAPI docs automatically
+    *   Handle exceptions globally with custom exception handlers
+    *   Secure endpoints with OAuth2 or API keys
+
+*   React
+
+    *   Use functional components and Hooks
+    *   Lift state up and use Context API or Zustand for global state
+    *   Memoize expensive components with `React.memo`
+    *   Split code with dynamic imports for performance
+
+*   Next.js (14)
+
+    *   Organize all routes under `app/` and leverage nested layouts
+    *   Use Server Components for data-fetching pages
+    *   Avoid `getInitialProps`; use `fetch` with built-in caching
+    *   Optimize images with `next/image`
+
+*   Node.js (18)
+
+    *   Use ES Modules and top-level `await`
+    *   Handle asynchronous errors with `try/catch`
+    *   Use `dotenv` for environment variables
+
+*   Qdrant
+
+    *   Run Qdrant in Docker with persistent volume
+    *   Secure HTTP API with API key
+    *   Batch `upsert` points to reduce network overhead
+
+*   Docker
+
+    *   Build small, single-purpose images
+    *   Pin base image versions
+    *   Use multi-stage builds to optimize image size
+
+*   Docker Compose
+
+    *   Use version `3.9`
+    *   Define depends_on for service startup order
+    *   Store environment variables in `.env`
+
+*   rclone / Syncthing
+
+    *   Configure idempotent sync jobs
+    *   Enable encryption at rest and in transit
+    *   Log sync activity and monitor failures
+
+*   OpenAI Embeddings API
+
+    *   Reuse a single client instance
+    *   Batch embedding requests where possible
+    *   Implement exponential backoff for rate limits
+
+*   Cron / systemd timers
+
+    *   Ensure jobs are idempotent and ship output to logs
+    *   Use file locks to prevent overlapping runs
+
+*   Telegram Bot API
+
+    *   Use webhooks for scalability or long-polling as fallback
+    *   Secure bot token in environment variable
+    *   Handle and log API errors gracefully
+
+## Rules
+
+*   Derive folder/file patterns **directly** from techStackDoc versions.
+*   If Next.js 14 App Router: Enforce `frontend/app/` directory with nested route folders.
+*   If Pages Router: Use `pages/*.tsx` flat structure (not applicable here).
+*   Mirror this logic for React Router, SvelteKit, etc.
+*   Never mix version patterns (e.g., no `pages/` in App Router projects).
+
+## Rules Metrics
+
+Before starting the project development, create a metrics file in the root of the project called `cursor_metrics.md`.
+
+### Instructions:
+
+*   Each time a cursor rule is used as context, update `cursor_metrics.md`.
+*   Use the following format for `cursor_metrics.md`:
+
+# Rules Metrics
+
+## Usage
+
+The number of times rules is used as context
+
+*   rule-name.mdc: 5
+*   another-rule.mdc: 2
+*   ...other rules

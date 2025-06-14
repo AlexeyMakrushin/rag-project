@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>System Monitoring Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .stats { margin: 20px 0; }
+        .stats table { border-collapse: collapse; width: 100%; }
+        .stats th, .stats td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .stats th { background-color: #f2f2f2; }
+        .warning { color: orange; }
+        .critical { color: red; }
+        .normal { color: green; }
+    </style>
+</head>
+<body>
+    <h1>System Monitoring Report</h1>
+    <p>Generated on: 2025-05-04 20:10:01</p>
+    
+    <div class="stats">
+        <h2>System Resources</h2>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Value</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>CPU Usage</td>
+                <td>17.5%</td>
+                <td class="normal">
+                    OK
+                </td>
+            </tr>
+            <tr>
+                <td>Memory Usage</td>
+                <td>6.19% (492 MB / 7941 MB)</td>
+                <td class="normal">
+                    OK
+                </td>
+            </tr>
+            <tr>
+                <td>Disk Usage</td>
+                <td>4% (Available: 112G)</td>
+                <td class="normal">
+                    OK
+                </td>
+            </tr>
+            <tr>
+                <td>System Load</td>
+                <td>0.16</td>
+                <td class="normal">
+                    OK
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="stats">
+        <h2>Network & Docker</h2>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Active Connections</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Docker Containers</td>
+                <td>0 running / 1 total</td>
+            </tr>
+            <tr>
+                <td>Docker Memory Usage</td>
+                <td>%</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

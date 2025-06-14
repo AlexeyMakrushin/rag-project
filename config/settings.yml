@@ -1,0 +1,63 @@
+# Основные настройки проекта
+
+# Настройки окружения
+environment:
+  name: development  # development, production
+  debug: true
+
+# Настройки файловой системы
+file_system:
+  max_file_size_mb: 50
+  supported_formats:
+    - pdf
+    - docx
+    - xlsx
+    - pptx
+
+# Настройки обработки документов
+processing:
+  chunk_size: 1000  # количество символов в чанке
+  chunk_overlap: 200
+  languages:
+    - en
+    - ru
+
+# Настройки индексации
+indexing:
+  batch_size: 10  # количество файлов в пакете для обработки
+  incremental: true  # инкрементальная индексация
+  schedule: "0 2 * * *"  # ежедневно в 2:00 (cron формат)
+
+# Настройки векторной БД
+vector_db:
+  collection_name: documents
+  vector_size: 1536  # для OpenAI embedding модели
+  distance: cosine  # cosine, euclid, dot
+  
+# Настройки AI моделей
+ai_models:
+  embedding:
+    provider: openai
+    model: text-embedding-ada-002
+  generation:
+    provider: anthropic
+    model: claude-3-haiku-20240307
+  
+# Настройки API
+api:
+  rate_limit: 100  # запросов в минуту
+  token_expiry: 86400  # в секундах (1 день)
+  
+# Настройки синхронизации
+sync:
+  enabled: true
+  providers:
+    - name: local
+      enabled: true
+    - name: nas
+      enabled: true
+      path: /mnt/nas
+    - name: yandex
+      enabled: true
+    - name: google
+      enabled: true

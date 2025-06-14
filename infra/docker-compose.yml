@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant_service
+    restart: unless-stopped
+    volumes:
+      - /home/makrushin/makrushinrag/data/qdrant:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__API_KEY=8xGpPuzEW8WTxAHrj7yfr/ZW5MFSYIsa
+      - QDRANT__SERVICE__ENABLE_API_KEY_AUTHORIZATION=true
+      #- QDRANT__STORAGE__OPTIMIZERS__DEFAULT_SEGMENT_NUMBER=2
+      #- QDRANT__STORAGE__OPTIMIZERS__INDEXING_THRESHOLD=20000
+      #- QDRANT__STORAGE__OPTIMIZERS__MEMMAP_THRESHOLD_KB=20000
+      #- QDRANT__STORAGE__OPTIMIZERS__VACUUM_MIN_VECTOR_NUMBER=1000
+      #- QDRANT__STORAGE__PERFORMANCE__MAX_SEARCH_THREADS=4
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    networks:
+      - rag_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+networks:
+  rag_network:
+    driver: bridge

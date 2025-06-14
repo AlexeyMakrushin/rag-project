@@ -1,0 +1,51 @@
+# Игнорирование конфиденциальных данных
+.env
+*.pem
+*.key
+*.crt
+
+# Игнорирование логов и временных файлов
+logs/*.log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.tmp
+
+# Игнорирование каталогов данных
+data/raw/*
+data/processed/*
+data/embeddings/*
+backups/*
+
+# Игнорирование каталогов зависимостей и сборки
+node_modules/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+dist/
+build/
+*.egg-info/
+
+# Игнорирование IDE и редакторов
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# --- ДОБАВЛЕНО ДЛЯ PYTHON VENV ---
+venv/
+env/
+.venv/
+
+# --- ДОБАВЛЕНО ДЛЯ GOOGLE API И ДРУГИХ СЕКРЕТОВ ---
+service-account.json
+*credentials.json
+*secret*.json
+secrets/
+
+# --- ДОБАВЛЕНО ДЛЯ DOCKER ---
+.dockerignore
+
