@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # RAG-Проект: Персональная система индексации документов
 
 ## Описание
@@ -21,3 +22,28 @@
 
 ## Запуск
 Подробные инструкции по запуску находятся в документации: `/docs/user-guide.md`
+=======
+# rag-project
+programming rag using gdrive
+>>>>>>> origin/main
+
+## Синхронизация данных из Google Drive
+
+Для синхронизации файлов из Google Drive и обновления их метаданных в Supabase используется специальный скрипт, запускаемый в Docker.
+
+### Первичная настройка
+
+1.  **Настройте `rclone`**: Убедитесь, что на вашем хост-сервере установлен и настроен `rclone` для доступа к Google Drive. Проверьте имя вашего remote командой `rclone listremotes`.
+2.  **Получите `credentials.json`**: Следуйте [инструкции Google](https://developers.google.com/drive/api/quickstart/python?hl=ru#authorize_credentials_for_a_desktop_application), чтобы создать OAuth 2.0 Client ID для "Desktop app". Скачайте JSON-файл и переименуйте его в `credentials.json`. Поместите его в директорию `scripts/`.
+3.  **Заполните `.env`**: Убедитесь, что в корневом `.env` файле заданы все необходимые переменные: `SUPABASE_URL`, `SUPABASE_KEY` (`service_role`), `GOOGLE_DRIVE_FOLDER_ID`, `RCLONE_REMOTE_NAME` и `LOCAL_SYNC_PATH="/data/sync_target"`.
+
+### Запуск синхронизации
+
+Чтобы запустить процесс, выполните команду из корневой директории проекта:
+
+```bash
+docker-compose run --rm sync_service
+```
+
+**При первом запуске:**
+Вам нужно будет пройти аутентификацию Google в консоли. Скрипт выведет ссылку, которую нужно открыть в браузере, авторизоваться и скопировать полученный код обратно в терминал. После этого будет создан файл `scripts/token.json`, и последующие запуски будут проходить автоматически.

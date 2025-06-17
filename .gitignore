@@ -40,9 +40,15 @@ venv/
 env/
 .venv/
 
+# Директории кэша Python
+__pycache__/
+*.pyc
+*.pyo
+
 # --- ДОБАВЛЕНО ДЛЯ GOOGLE API И ДРУГИХ СЕКРЕТОВ ---
 service-account.json
 *credentials.json
+*token.json
 *secret*.json
 secrets/
 

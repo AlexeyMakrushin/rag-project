@@ -16,6 +16,23 @@ services:
     environment:
       - QDRANT_ALLOW_RECOVERY_MODE=true
 
+  sync_service:
+    build:
+      context: ./scripts  # Указываем, где лежит Dockerfile
+    container_name: rag_sync_service
+    env_file:
+      - .env  # Подключаем файл с переменными окружения
+    # ports: # Эту и следующую строку прописали для прохождения идентификации gdrive
+    #   - "8080:8080"
+    volumes:
+      # Пробрасываем локальную папку для синхронизации внутрь контейнера
+      - /home/makrushin/makrushinrag/documents:/data/sync_target
+      # Пробрасываем конфиг rclone с хоста в контейнер (используем абсолютный путь)
+      - /root/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf
+      # Пробрасываем файлы аутентификации Google, чтобы не терять их при перезапуске
+      - ./scripts/credentials.json:/app/credentials.json
+      - ./scripts/token.json:/app/token.json
+
   # API сервис (будет разработан позже)
   # api:
   #   build: ./src/backend
