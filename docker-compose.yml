@@ -28,7 +28,8 @@ services:
       # Пробрасываем локальную папку для синхронизации внутрь контейнера
       - /home/makrushin/makrushinrag/documents:/data/sync_target
       # Пробрасываем конфиг rclone с хоста в контейнер (используем абсолютный путь)
-      - /root/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf
+      - /root/.config/rclone/rclone.conf:/root/.config/rclone/rclone.conf:ro
+      # :ro - read-only, хорошая практика
       # Пробрасываем файлы аутентификации Google, чтобы не терять их при перезапуске
       - ./scripts/credentials.json:/app/credentials.json
       - ./scripts/token.json:/app/token.json

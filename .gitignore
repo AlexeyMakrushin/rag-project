@@ -13,10 +13,8 @@ yarn-error.log*
 *.tmp
 
 # Игнорирование каталогов данных
-data/raw/*
-data/processed/*
-data/embeddings/*
-backups/*
+**/data/
+**/backup/
 
 # Игнорирование каталогов зависимостей и сборки
 node_modules/
